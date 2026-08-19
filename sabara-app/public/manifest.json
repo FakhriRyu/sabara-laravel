@@ -1,0 +1,16 @@
+{
+  "name": "SABARA - Sarana Belajar Bahasa Daerah",
+  "short_name": "SABARA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0fdf4",
+  "theme_color": "#16a34a",
+  "description": "Web app pembelajaran bahasa daerah Bengkulu dengan materi, latihan interaktif, dan kuis gamifikasi.",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

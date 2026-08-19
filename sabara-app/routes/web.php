@@ -22,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
     // Routes that require language to be selected
     Route::middleware(['language.check'])->group(function () {
         Route::get('/beranda', \App\Livewire\Beranda::class)->name('beranda');
+        Route::redirect('/dashboard', '/beranda')->name('dashboard');
         Route::get('/pelajaran/{materiId}', \App\Livewire\Pelajaran::class)->name('pelajaran');
         Route::get('/latihan', \App\Livewire\Latihan::class)->name('latihan');
         Route::get('/kuis', \App\Livewire\Kuis::class)->name('kuis');
