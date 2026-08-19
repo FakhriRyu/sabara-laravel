@@ -2,7 +2,7 @@
     
     <!-- Top bar -->
     <div class="bg-white px-4 py-3 shadow-sm flex items-center justify-between border-b border-gray-100 shrink-0">
-        <a href="{{ route('pelajaran', ['materiId' => $categoryId]) }}" class="text-gray-400 hover:text-gray-600">
+        <a href="{{ route('pelajaran.path', ['materiId' => $categoryId]) }}" class="text-gray-400 hover:text-gray-600">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -57,9 +57,9 @@
                        class="block w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold shadow-md transition text-center">
                         Ulangi Latihan
                     </a>
-                    <a href="{{ route('pelajaran', ['materiId' => $categoryId]) }}" 
+                    <a href="{{ route('pelajaran.path', ['materiId' => $categoryId]) }}" 
                        class="block w-full py-3 px-4 bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl font-bold transition text-center">
-                        Kembali ke Pelajaran
+                        Kembali ke Peta Belajar
                     </a>
                 </div>
             </div>
@@ -72,8 +72,8 @@
                 </svg>
                 <h3 class="text-lg font-bold text-gray-700">Belum ada soal</h3>
                 <p class="text-gray-500 mt-2 mb-6">Soal untuk level ini belum ditambahkan.</p>
-                <a href="{{ route('pelajaran', ['materiId' => $categoryId]) }}" class="px-6 py-2 bg-green-600 text-white rounded-full font-semibold shadow">
-                    Kembali
+                <a href="{{ route('pelajaran.path', ['materiId' => $categoryId]) }}" class="px-6 py-2 bg-[#2998BD] text-white rounded-full font-semibold shadow">
+                    Kembali ke Peta Belajar
                 </a>
             </div>
             

@@ -121,7 +121,7 @@
 
     <!-- Bottom Action Button: Mulai Latihan -->
     <div class="mt-8">
-        <a href="{{ route('latihan', ['categoryId' => $materiId, 'level' => (count($levels) > 0 ? $levels[0] : 1)]) }}" 
+        <a href="{{ route('pelajaran.path', $materiId) }}" 
            class="w-full bg-[#9DE4C7] hover:bg-[#88DAB9] text-[#134E4A] font-black text-base py-4 px-6 rounded-2xl shadow-sm block text-center transition active:scale-[0.99]">
             Mulai Latihan
         </a>

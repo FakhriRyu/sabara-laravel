@@ -25,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/beranda', \App\Livewire\Beranda::class)->name('beranda');
         Route::redirect('/dashboard', '/beranda')->name('dashboard');
         Route::get('/pelajaran/{materiId}', \App\Livewire\Pelajaran::class)->name('pelajaran');
+        Route::get('/pelajaran/{materiId}/path', \App\Livewire\LatihanPath::class)->name('pelajaran.path');
         Route::get('/latihan', \App\Livewire\Latihan::class)->name('latihan');
         Route::get('/kuis', \App\Livewire\Kuis::class)->name('kuis');
         Route::get('/peringkat', \App\Livewire\Kuis::class)->name('peringkat');
