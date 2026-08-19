@@ -18,6 +18,7 @@ Route::middleware(['auth'])->group(function () {
     // Pilih Bahasa (no language check needed here)
     Route::get('/pilih-bahasa', \App\Livewire\PilihBahasa::class)->name('pilih-bahasa');
     Route::get('/profil', \App\Livewire\Profil::class)->name('profil');
+    Route::redirect('/profile', '/profil')->name('profile.edit');
 
     // Routes that require language to be selected
     Route::middleware(['language.check'])->group(function () {
