@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pelajaran/{materiId}', \App\Livewire\Pelajaran::class)->name('pelajaran');
         Route::get('/latihan', \App\Livewire\Latihan::class)->name('latihan');
         Route::get('/kuis', \App\Livewire\Kuis::class)->name('kuis');
+        Route::get('/peringkat', \App\Livewire\Kuis::class)->name('peringkat');
     });
 });
 

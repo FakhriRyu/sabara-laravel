@@ -22,7 +22,6 @@ class Kuis extends Component
     public $isCorrect = false;
     
     public $totalQuestions = 10;
-    
     public $leaderboard = [];
     
     public function mount()
@@ -32,35 +31,34 @@ class Kuis extends Component
     
     public function loadLeaderboard()
     {
-        if (Schema::hasTable('quiz_results')) {
-            $this->leaderboard = User::select('users.id', 'users.name', 'users.avatar_url')
-                ->selectRaw('MAX(quiz_results.score) as max_score')
-                ->join('quiz_results', 'users.id', '=', 'quiz_results.user_id')
-                ->groupBy('users.id', 'users.name', 'users.avatar_url')
-                ->havingRaw('MAX(quiz_results.score) > 0')
-                ->orderByDesc('max_score')
-                ->take(20)
-                ->get();
-        }
+        $this->leaderboard = User::select('users.id', 'users.name', 'users.avatar_url')
+            ->selectRaw('(COALESCE((SELECT SUM(lp.score) * 10 FROM latihan_progress lp WHERE lp.user_id = users.id), 0) + COALESCE((SELECT MAX(qr.score) FROM quiz_results qr WHERE qr.user_id = users.id), 0)) as max_score')
+            ->orderByDesc('max_score')
+            ->take(20)
+            ->get();
     }
     
     public function startQuiz()
     {
         $user = Auth::user();
         
-        // Ensure table exists before querying
         if (!Schema::hasTable('soal_kuis')) {
             $this->js("alert('Belum ada soal kuis tersedia')");
             return;
         }
 
         $query = SoalKuis::query();
-        if ($user && Schema::hasColumn('users', 'selected_language_id') && $user->selected_language_id) {
+        if ($user && $user->selected_language_id) {
             $query->where('language_id', $user->selected_language_id);
         }
         
         $this->questions = $query->inRandomOrder()->limit($this->totalQuestions)->get();
         
+        if ($this->questions->isEmpty()) {
+            // If no questions in selected language, get general questions
+            $this->questions = SoalKuis::inRandomOrder()->limit($this->totalQuestions)->get();
+        }
+
         if ($this->questions->isEmpty()) {
             $this->js("alert('Belum ada soal kuis tersedia')");
             return;
