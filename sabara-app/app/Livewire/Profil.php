@@ -17,6 +17,9 @@ class Profil extends Component
     public $avatar;
     public $stats;
 
+    public $showEditModal = false;
+    public $showAboutModal = false;
+
     public function mount()
     {
         $this->user = auth()->user()->load('selectedLanguage');
@@ -34,15 +37,6 @@ class Profil extends Component
         
         $totalLatihan = LatihanProgress::where('user_id', $userId)->count();
         
-        // Accuracy: average score percentage from quiz results
-        $quizResults = QuizResult::where('user_id', $userId)->get();
-        $accuracy = $quizResults->count() > 0 
-            ? round($quizResults->avg(function ($r) { 
-                return $r->total_questions > 0 ? ($r->score / $r->total_questions) * 100 : 0; 
-            })) 
-            : 0;
-
-        // Rank
         $allUsers = User::select('users.id')
             ->selectRaw('(COALESCE((SELECT SUM(lp.score) * 10 FROM latihan_progress lp WHERE lp.user_id = users.id), 0) + COALESCE((SELECT MAX(qr.score) FROM quiz_results qr WHERE qr.user_id = users.id), 0)) as total_points')
             ->orderByDesc('total_points')
@@ -54,10 +48,15 @@ class Profil extends Component
             'totalPoints' => $totalPoints,
             'rank' => $rank,
             'totalLatihan' => $totalLatihan,
-            'accuracy' => $accuracy,
             'latihanPoints' => $latihanPoints,
             'quizMax' => $quizMax,
         ];
+    }
+
+    public function openEditModal()
+    {
+        $this->name = $this->user->name;
+        $this->showEditModal = true;
     }
 
     public function updateProfile()
@@ -77,6 +76,7 @@ class Profil extends Component
 
         $user->save();
         $this->user = $user->fresh()->load('selectedLanguage');
+        $this->showEditModal = false;
         session()->flash('message', 'Profil berhasil diperbarui!');
     }
 
