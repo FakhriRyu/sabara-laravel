@@ -9,6 +9,6 @@ class Latihan extends Component
     public function render()
     {
         return view('livewire.latihan')
-            ->layout('layouts.app');
+            ->layout('layouts.user');
     }
 }

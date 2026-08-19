@@ -9,6 +9,6 @@ class Kuis extends Component
     public function render()
     {
         return view('livewire.kuis')
-            ->layout('layouts.app');
+            ->layout('layouts.user');
     }
 }

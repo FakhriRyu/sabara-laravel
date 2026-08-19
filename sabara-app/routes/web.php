@@ -10,9 +10,7 @@ Route::get('/', function () {
 // Guest routes (login, register) are handled by Breeze
 // Add admin login route
 Route::middleware('guest')->group(function () {
-    Route::get('/loginadmin', function() {
-        return view('auth.login-admin');
-    })->name('login.admin');
+    Route::get('/loginadmin', \App\Livewire\AdminLogin::class)->name('login.admin');
 });
 
 // User Routes (auth + verified)
