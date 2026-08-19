@@ -26,8 +26,8 @@ class Pelajaran extends Component
             $query->orderBy('order_index');
         }])->findOrFail($materiId);
         
-        // Ensure language matches
-        if ($this->materi->language_type !== $user->preferred_language) {
+        // Ensure language matches if user selected language
+        if ($user && $user->selected_language_id && $this->materi->language_id && $this->materi->language_id !== $user->selected_language_id) {
             return redirect()->route('beranda')->with('error', 'Materi tidak sesuai dengan bahasa yang dipilih.');
         }
 
