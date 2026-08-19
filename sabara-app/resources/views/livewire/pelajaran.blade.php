@@ -1,127 +1,129 @@
-<div class="min-h-screen bg-gray-50 pb-20">
-    <!-- Header -->
-    <div class="bg-green-600 text-white rounded-b-3xl p-6 shadow-md relative overflow-hidden">
-        <div class="absolute top-0 right-0 opacity-10">
-            <svg width="150" height="150" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7l10 5 10-5-10-5zm0 7.5l-10-5v10l10 5 10-5v-10l-10 5z"/>
-            </svg>
-        </div>
-        
-        <div class="relative z-10 flex items-center mb-6">
-            <a href="{{ route('beranda') }}" class="mr-4 p-2 bg-white/20 rounded-full hover:bg-white/30 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+<div class="px-5 pt-6 pb-36 font-sans max-w-md mx-auto min-h-screen flex flex-col justify-between" x-data="{ currentAudio: null }">
+    <div>
+        <!-- Top Close Button -->
+        <div class="flex items-center justify-between mb-4">
+            <a href="/beranda" class="p-2 -ml-2 text-slate-800 hover:text-slate-600 rounded-full hover:bg-slate-100 transition">
+                <svg class="w-6 h-6 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </a>
-            <div>
-                <h1 class="text-2xl font-bold">{{ $materi->title }}</h1>
-                <p class="text-green-100 text-sm opacity-90">{{ ucfirst($materi->category) }}</p>
-            </div>
+            <div></div>
         </div>
-        
-        <div class="relative z-10">
-            <p class="text-white/90 text-sm leading-relaxed">{{ $materi->description }}</p>
+
+        <!-- Mascot Illustration & Title -->
+        <div class="flex flex-col items-center text-center mb-6">
+            <!-- 2-Person Chatting Illustration -->
+            <div class="w-24 h-24 relative mb-2 flex items-center justify-center">
+                <svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-xs" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Top Speech Bubbles -->
+                    <rect x="25" y="14" width="38" height="22" rx="6" fill="#38BDF8" stroke="#0284C7" stroke-width="2.5"/>
+                    <line x1="32" y1="21" x2="55" y2="21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="32" y1="27" x2="48" y2="27" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M35 36 L30 43 L42 36 Z" fill="#38BDF8" stroke="#0284C7" stroke-width="2.5" stroke-linejoin="round"/>
+
+                    <rect x="58" y="6" width="38" height="22" rx="6" fill="#2DD4BF" stroke="#0F766E" stroke-width="2.5"/>
+                    <line x1="65" y1="13" x2="88" y2="13" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="65" y1="19" x2="80" y2="19" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M85 28 L90 35 L78 28 Z" fill="#2DD4BF" stroke="#0F766E" stroke-width="2.5" stroke-linejoin="round"/>
+
+                    <!-- Boy Character (Left) -->
+                    <!-- Hair -->
+                    <path d="M30 65 C30 50, 52 48, 54 65 C54 75, 48 78, 30 75 Z" fill="#F59E0B" stroke="#78350F" stroke-width="2.5"/>
+                    <!-- Face -->
+                    <circle cx="42" cy="72" r="16" fill="#FDE68A" stroke="#78350F" stroke-width="2.5"/>
+                    <!-- Eyes & Smile -->
+                    <circle cx="37" cy="72" r="2" fill="#78350F"/>
+                    <circle cx="47" cy="72" r="2" fill="#78350F"/>
+                    <path d="M40 78 Q42 81 44 78" stroke="#78350F" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <!-- Hair Front -->
+                    <path d="M32 60 Q42 55 52 64" fill="#F59E0B" stroke="#78350F" stroke-width="2.5"/>
+
+                    <!-- Girl Character (Right) -->
+                    <!-- Hair Back -->
+                    <path d="M68 62 C68 48, 92 48, 94 62 C96 78, 98 90, 88 88 C80 88, 70 82, 68 62 Z" fill="#334155" stroke="#0F172A" stroke-width="2.5"/>
+                    <!-- Face -->
+                    <circle cx="80" cy="72" r="16" fill="#FED7AA" stroke="#7C2D12" stroke-width="2.5"/>
+                    <!-- Eyes & Smile -->
+                    <circle cx="75" cy="72" r="2" fill="#7C2D12"/>
+                    <circle cx="85" cy="72" r="2" fill="#7C2D12"/>
+                    <path d="M78 78 Q80 81 82 78" stroke="#7C2D12" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <!-- Hair Front -->
+                    <path d="M68 60 Q76 56 86 63" fill="#334155" stroke="#0F172A" stroke-width="2.5"/>
+                </svg>
+            </div>
+
+            <!-- Category Subtitle -->
+            <p class="font-bold text-slate-800 text-sm sm:text-base leading-tight">
+                {{ $materi->category ?? 'Dasar' }}
+            </p>
+            <!-- Title -->
+            <h1 class="font-black text-xl sm:text-2xl text-slate-900 tracking-tight mt-0.5">
+                {{ $materi->title }}
+            </h1>
+        </div>
+
+        <!-- Chat Conversation Card Container -->
+        <div class="bg-white rounded-[32px] border border-gray-100 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.05)] p-5 sm:p-6 space-y-4">
+            @forelse($percakapan as $dialog)
+                @php
+                    $isSpeaker1 = ($dialog->speaker == '1' || $dialog->speaker === 'Speaker 1' || $dialog->speaker === 'Penutur 1');
+                @endphp
+
+                @if($isSpeaker1)
+                    <!-- Speaker 1 (Left - White Bubble) -->
+                    <div class="flex justify-start">
+                        <div class="bg-white border border-gray-200/80 rounded-2xl rounded-tl-sm p-4 shadow-xs max-w-[85%] relative group">
+                            <p class="font-bold text-sm text-slate-900 leading-snug">
+                                {{ $dialog->bengkulu }}
+                            </p>
+                            <p class="text-xs text-slate-500 font-medium mt-0.5">
+                                {{ $dialog->indonesia }}
+                            </p>
+                            
+                            @if($dialog->audio_url)
+                                <button @click="if(currentAudio) currentAudio.pause(); currentAudio = new Audio('{{ $dialog->audio_url }}'); currentAudio.play()" 
+                                        class="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-[#2998BD] bg-[#DCF3FB] px-2 py-0.5 rounded-full hover:bg-[#cbeaf6] transition">
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+                                    <span>Putar Suara</span>
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                @else
+                    <!-- Speaker 2 (Right - Soft Light Blue Bubble) -->
+                    <div class="flex justify-end">
+                        <div class="bg-[#F0F8FC] border border-[#E0F0F8] rounded-2xl rounded-tr-sm p-4 shadow-xs max-w-[85%] relative group">
+                            <p class="font-bold text-sm text-slate-900 leading-snug">
+                                {{ $dialog->bengkulu }}
+                            </p>
+                            <p class="text-xs text-slate-500 font-medium mt-0.5">
+                                {{ $dialog->indonesia }}
+                            </p>
+                            
+                            @if($dialog->audio_url)
+                                <button @click="if(currentAudio) currentAudio.pause(); currentAudio = new Audio('{{ $dialog->audio_url }}'); currentAudio.play()" 
+                                        class="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-[#2998BD] bg-[#DCF3FB] px-2 py-0.5 rounded-full hover:bg-[#cbeaf6] transition">
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+                                    <span>Putar Suara</span>
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+            @empty
+                <div class="text-center py-8 text-slate-400">
+                    <span class="text-3xl block mb-2">💬</span>
+                    <p class="text-sm">Belum ada dialog percakapan untuk materi ini.</p>
+                </div>
+            @endforelse
         </div>
     </div>
 
-    <div class="p-4 max-w-lg mx-auto space-y-8 mt-4">
-        
-        <!-- Section 1: Percakapan -->
-        @if(count($percakapan) > 0)
-        <div>
-            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                Dialog Interaktif
-            </h2>
-            
-            <div class="bg-white rounded-2xl shadow-sm p-4 space-y-4" x-data="{ currentAudio: null }">
-                @foreach($percakapan as $dialog)
-                    @if($dialog->speaker === 'Speaker 1')
-                        <div class="flex flex-col items-start">
-                            <span class="text-xs text-gray-500 mb-1 ml-2 font-medium">{{ $dialog->speaker }}</span>
-                            <div class="bg-green-100 text-green-900 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%] relative group">
-                                <p class="font-semibold text-sm">{{ $dialog->bengkulu_text }}</p>
-                                <p class="text-xs text-green-700/80 mt-1 italic">{{ $dialog->indonesia_text }}</p>
-                                
-                                @if($dialog->audio_url)
-                                <button @click="if(currentAudio) currentAudio.pause(); currentAudio = new Audio('{{ Storage::url($dialog->audio_url) }}'); currentAudio.play()" 
-                                        class="absolute -right-10 top-2 p-1.5 bg-green-50 text-green-600 rounded-full shadow-sm hover:bg-green-200 transition">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                @endif
-                            </div>
-                        </div>
-                    @else
-                        <div class="flex flex-col items-end">
-                            <span class="text-xs text-gray-500 mb-1 mr-2 font-medium">{{ $dialog->speaker }}</span>
-                            <div class="bg-emerald-50 border border-emerald-100 text-emerald-900 rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%] relative group">
-                                <p class="font-semibold text-sm">{{ $dialog->bengkulu_text }}</p>
-                                <p class="text-xs text-emerald-700/80 mt-1 italic">{{ $dialog->indonesia_text }}</p>
-                                
-                                @if($dialog->audio_url)
-                                <button @click="if(currentAudio) currentAudio.pause(); currentAudio = new Audio('{{ Storage::url($dialog->audio_url) }}'); currentAudio.play()" 
-                                        class="absolute -left-10 top-2 p-1.5 bg-emerald-50 text-emerald-600 rounded-full shadow-sm hover:bg-emerald-200 transition">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                @endif
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
-            </div>
-        </div>
-        @endif
-
-        <!-- Section 2: Level Latihan -->
-        <div>
-            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Latihan Pemahaman
-            </h2>
-            
-            <div class="space-y-3">
-                @forelse($levels as $level)
-                    @php
-                        $levelProgress = $progress[$level] ?? null;
-                        $stars = $levelProgress ? $levelProgress['stars'] : 0;
-                    @endphp
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center justify-between">
-                        <div>
-                            <h3 class="font-bold text-gray-800 text-lg">Level {{ $level }}</h3>
-                            <div class="flex items-center mt-1 space-x-1">
-                                @for($i = 1; $i <= 3; $i++)
-                                    <svg class="w-5 h-5 {{ $i <= $stars ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                @endfor
-                            </div>
-                        </div>
-                        
-                        <a href="{{ route('latihan', ['categoryId' => $materiId, 'level' => $level]) }}" 
-                           class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-full font-semibold shadow-sm transition transform hover:scale-105 active:scale-95 text-sm">
-                            Mulai
-                        </a>
-                    </div>
-                @empty
-                    <div class="bg-white p-6 rounded-xl shadow-sm text-center border border-gray-100">
-                        <div class="text-gray-400 mb-2">
-                            <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                            </svg>
-                        </div>
-                        <p class="text-gray-500">Belum ada latihan untuk materi ini.</p>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-
+    <!-- Bottom Action Button: Mulai Latihan -->
+    <div class="mt-8">
+        <a href="{{ route('latihan', ['categoryId' => $materiId, 'level' => (count($levels) > 0 ? $levels[0] : 1)]) }}" 
+           class="w-full bg-[#9DE4C7] hover:bg-[#88DAB9] text-[#134E4A] font-black text-base py-4 px-6 rounded-2xl shadow-sm block text-center transition active:scale-[0.99]">
+            Mulai Latihan
+        </a>
     </div>
 </div>
