@@ -33,8 +33,11 @@ class Kuis extends Component
     public function loadLeaderboard()
     {
         if (Schema::hasTable('quiz_results')) {
-            $this->leaderboard = User::withMax('quizResults as max_score', 'score')
-                ->having('max_score', '>', 0)
+            $this->leaderboard = User::select('users.id', 'users.name', 'users.avatar_url')
+                ->selectRaw('MAX(quiz_results.score) as max_score')
+                ->join('quiz_results', 'users.id', '=', 'quiz_results.user_id')
+                ->groupBy('users.id', 'users.name', 'users.avatar_url')
+                ->havingRaw('MAX(quiz_results.score) > 0')
                 ->orderByDesc('max_score')
                 ->take(20)
                 ->get();
@@ -79,8 +82,15 @@ class Kuis extends Component
         $this->isAnswered = true;
         
         $currentQuestion = $this->questions[$this->currentIndex];
+        $correctAnswer = $currentQuestion->answer ?? $currentQuestion->correct_answer ?? '';
         
-        if ((string)$answerKey === (string)$currentQuestion->correct_answer) {
+        $rawOptions = is_string($currentQuestion->options) ? json_decode($currentQuestion->options, true) : $currentQuestion->options;
+        $optionText = is_array($rawOptions) ? ($rawOptions[$answerKey] ?? '') : '';
+        
+        if (
+            strtolower(trim((string)$answerKey)) === strtolower(trim((string)$correctAnswer)) ||
+            (strlen($optionText) > 0 && strtolower(trim((string)$optionText)) === strtolower(trim((string)$correctAnswer)))
+        ) {
             $this->isCorrect = true;
             $this->score += 10; // 10 points per question
         } else {

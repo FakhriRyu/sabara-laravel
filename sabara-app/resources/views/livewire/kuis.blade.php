@@ -115,11 +115,29 @@
 
                 <!-- Options -->
                 <div class="space-y-3">
-                    @foreach(['a' => $q->option_a, 'b' => $q->option_b, 'c' => $q->option_c, 'd' => $q->option_d] as $key => $option)
+                    @php
+                        $rawOptions = is_string($q->options) ? json_decode($q->options, true) : $q->options;
+                        $optionsList = [];
+                        if (is_array($rawOptions)) {
+                            if (isset($rawOptions['a']) || isset($rawOptions['b'])) {
+                                $optionsList = $rawOptions;
+                            } else {
+                                $keys = ['a', 'b', 'c', 'd'];
+                                foreach ($rawOptions as $idx => $opt) {
+                                    $key = $keys[$idx] ?? (string)$idx;
+                                    $optionsList[$key] = $opt;
+                                }
+                            }
+                        }
+                        $correctAnswer = $q->answer ?? $q->correct_answer ?? '';
+                    @endphp
+
+                    @foreach($optionsList as $key => $option)
                         @if($option)
                             @php
-                                $isThisSelected = $selectedAnswer === $key;
-                                $isThisCorrect = (string)$key === (string)$q->correct_answer;
+                                $isThisSelected = (string)$selectedAnswer === (string)$key;
+                                $isThisCorrect = strtolower(trim((string)$key)) === strtolower(trim((string)$correctAnswer)) || 
+                                                strtolower(trim((string)$option)) === strtolower(trim((string)$correctAnswer));
                                 
                                 $btnClass = "bg-white border-2 border-gray-200 text-gray-700 hover:border-green-300";
                                 if ($isAnswered) {
